@@ -1,18 +1,17 @@
 package erdm_api;
 
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class QueryController {
 
-    public static void main(String[] args) throws Exception {
+    DynamoQuery dynamoQuery = new DynamoQuery();
 
-    }
-
-    @RequestMapping("/query")
-    public Query query(@RequestParam() String query) {
-        return new Query("query");
+    @RequestMapping(path="/query", method=RequestMethod.GET, produces="application/json")
+    public DynamoQuery.PriceData query(@RequestParam(value="price", defaultValue="100") String query) {
+        return dynamoQuery.sendQuery("price = "+query).get(0);
     }
 }

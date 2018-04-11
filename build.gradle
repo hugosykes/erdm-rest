@@ -22,13 +22,14 @@ targetCompatibility = 1.8
 
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-web")
+    compile("com.amazonaws:aws-java-sdk-dynamodb:1.11.312")
     testCompile('org.springframework.boot:spring-boot-starter-test')
 }
 
-bootJar {
+jar {
     baseName = 'erdm-rest-api'
     version =  '0.1.0'
     manifest {
-        attributes 'Main-Class': 'erdm_api.QueryController'
+        attributes 'Main-Class': 'erdm_api.Application'
     }
 }
