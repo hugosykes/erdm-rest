@@ -34,10 +34,14 @@ public class DynamoQuery {
     private static List<PriceData> ScanPriceDataWithPriceOf(DynamoDBMapper mapper, String query) {
         try {
             String[] queryParts = query.split(" = ");
-            System.out.println("Find Price data with a price of: " + queryParts[1] + " using scan.");
+            System.out.println("Find Price data with a "+queryParts[0]+" of: " + queryParts[1] + " using scan.");
 
             Map<String, AttributeValue> eav = new HashMap<String, AttributeValue>();
-            eav.put(":val1", new AttributeValue().withN(queryParts[1]));
+            if (queryParts[0].equals("price_date")) {
+                eav.put(":val1", new AttributeValue().withS(queryParts[1]));
+            } else {
+                eav.put(":val1", new AttributeValue().withN(queryParts[1]));
+            }
 
             DynamoDBScanExpression scanExpression = new DynamoDBScanExpression()
                     .withFilterExpression(queryParts[0] + " = :val1").withExpressionAttributeValues(eav);
@@ -78,7 +82,7 @@ public class DynamoQuery {
         private Integer id;
         private Integer price;
         private Integer priceYesterday;
-        private String date;
+        private String price_date;
 
         @DynamoDBHashKey(attributeName = "id")
         public Integer getId() {
@@ -107,18 +111,18 @@ public class DynamoQuery {
             this.priceYesterday = priceYesterday;
         }
 
-        @DynamoDBAttribute(attributeName = "date")
+        @DynamoDBAttribute(attributeName = "price_date")
         public String getDate() {
-            return date;
+            return price_date;
         }
 
-        public void setDate(String date) {
-            this.date = date;
+        public void setDate(String price_date) {
+            this.price_date = price_date;
         }
 
         @Override
         public String toString() {
-            return "Price Data [price today=" + price + ", price yesterday=" + priceYesterday + ", date=" + date + ", id=" + id +"]";
+            return "Price Data [price today=" + price + ", price yesterday=" + priceYesterday + ", price_date=" + price_date + ", id=" + id +"]";
         }
     }
 }
