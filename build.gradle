@@ -30,6 +30,6 @@ jar {
     baseName = 'erdm-rest'
     version =  '0.1.0'
     manifest {
-        attributes 'Main-Class': 'erdm_api.Application'
+        attributes 'Main-Class': 'erdm_api.QueryController'
     }
 }
