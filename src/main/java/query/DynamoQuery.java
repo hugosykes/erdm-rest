@@ -13,11 +13,16 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
+import org.springframework.stereotype.Service;
 
-
+@Service
 public class DynamoQuery {
 
-    static AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard().build();
+    final AmazonDynamoDB client;
+
+    public DynamoQuery() {
+        client = AmazonDynamoDBClientBuilder.standard().build();
+    }
 
     public List<PriceData> sendQuery(String query) {
         try {
@@ -34,7 +39,7 @@ public class DynamoQuery {
     private static List<PriceData> ScanPriceDataWithPriceOf(DynamoDBMapper mapper, String query) {
         try {
             String[] queryParts = query.split(" = ");
-            System.out.println("Find Price data with a "+queryParts[0]+" of: " + queryParts[1] + " using scan.");
+            System.out.println("Find Price data with a " + queryParts[0] + " of: " + queryParts[1] + " using scan.");
 
             Map<String, AttributeValue> eav = new HashMap<String, AttributeValue>();
             if (queryParts[0].equals("price_date")) {
@@ -51,31 +56,15 @@ public class DynamoQuery {
             for (PriceData price : priceData) {
                 System.out.println(price.toString());
             }
-            if (priceData.isEmpty()) { return new ArrayList(); }
+            if (priceData.isEmpty()) {
+                return new ArrayList();
+            }
             return priceData;
         } catch (IndexOutOfBoundsException e) {
             System.out.println("Error message for IndexOutOfBoundsException: " + e.getMessage());
         }
         return new ArrayList<PriceData>();
     }
-    
-    // private static void QueryPriceDataWithPriceOf(DynamoDBMapper mapper, Integer priceOf) throws Exception {
-    //     System.out.println("Find Price data with a price of: " + priceOf + " using query.");
-
-    //     Map<String, AttributeValue> eav = new HashMap<String, AttributeValue>();
-    //     eav.put(":val1", new AttributeValue().withN("24"));
-    //     eav.put(":val2", new AttributeValue().withN(priceOf.toString()));
-        
-    //     DynamoDBQueryExpression<PriceData> queryExpression = new DynamoDBQueryExpression<PriceData>()
-    //         .withKeyConditionExpression("id = :val1")
-    //         .withExpressionAttributeValues(eav);
-
-    //     List<PriceData> priceData = mapper.query(PriceData.class, queryExpression);
-
-    //     for (PriceData price : priceData) {
-    //         System.out.println(price.toString());
-    //     }
-    // }
 
     @DynamoDBTable(tableName = "erdm_test")
     public static class PriceData {
@@ -122,7 +111,7 @@ public class DynamoQuery {
 
         @Override
         public String toString() {
-            return "Price Data [price today=" + price + ", price yesterday=" + priceYesterday + ", price_date=" + price_date + ", id=" + id +"]";
+            return "Price Data [price today=" + price + ", price yesterday=" + priceYesterday + ", price_date=" + price_date + ", id=" + id + "]";
         }
     }
 }

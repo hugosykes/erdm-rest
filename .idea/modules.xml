@@ -3,6 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/erdm-rest.iml" filepath="$PROJECT_DIR$/erdm-rest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/erdm-rest_main.iml" filepath="$PROJECT_DIR$/.idea/modules/erdm-rest_main.iml" group="erdm-rest" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/erdm-rest_test.iml" filepath="$PROJECT_DIR$/.idea/modules/erdm-rest_test.iml" group="erdm-rest" />
     </modules>
   </component>
 </project>

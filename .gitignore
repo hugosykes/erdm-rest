@@ -1,3 +1,5 @@
 .gradle
 build
 .project
+.vscode
+.idea
